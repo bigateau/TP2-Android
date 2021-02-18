@@ -25,7 +25,7 @@ public class AsyncFlickrJSONDataForList extends AsyncTask<String, Void, JSONObje
         this.adapter = ada;
     }
 
-    protected JSONObject doInBackground(String... strings){
+    protected JSONObject doInBackground(String... strings){ //same as before
         URL url = null;
         JSONObject j = null;
         try {
@@ -46,7 +46,8 @@ public class AsyncFlickrJSONDataForList extends AsyncTask<String, Void, JSONObje
         return j;
     }
 
-    private JSONObject readStream(InputStream is) throws IOException {
+    //same readStream
+    private JSONObject readStream(InputStream is) throws IOException { //same as before
         try{
             ByteArrayOutputStream bo = new ByteArrayOutputStream();
             int i = is.read();
@@ -64,7 +65,7 @@ public class AsyncFlickrJSONDataForList extends AsyncTask<String, Void, JSONObje
     }
 
     @Override
-    protected void onPostExecute(JSONObject jsonObject) {
+    protected void onPostExecute(JSONObject jsonObject) { //same as before
         super.onPostExecute(jsonObject);
         try {
             JSONArray items = jsonObject.getJSONArray("items");

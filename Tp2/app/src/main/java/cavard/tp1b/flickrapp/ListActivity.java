@@ -17,12 +17,12 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        ListView list = findViewById(R.id.list);
+        ListView list = findViewById(R.id.list); //get the list view
 
-        adapter = new MyAdapter(this);
-        list.setAdapter(adapter);
+        adapter = new MyAdapter(this); //adapter
+        list.setAdapter(adapter); //set the adapter to the list
 
-        AsyncTask<String, Void, JSONObject> task = new AsyncFlickrJSONDataForList(adapter);
-        task.execute("https://www.flickr.com/services/feeds/photos_public.gne?tags=trees&format=json", null, null);
+        AsyncTask<String, Void, JSONObject> task = new AsyncFlickrJSONDataForList(adapter); //asynctask for a list
+        task.execute("https://www.flickr.com/services/feeds/photos_public.gne?tags=trees&format=json", null, null); //link of pictures
     }
 }

@@ -26,7 +26,7 @@ public class AsyncBitmapDownloader extends AsyncTask<String, Void, Bitmap>{
     private ImageView image_view;
 
     public AsyncBitmapDownloader(AppCompatActivity a){
-        this.image_view = a.findViewById(R.id.image);
+        this.image_view = a.findViewById(R.id.image); //instead of our main activity we get directly the image_view where we want to set the futur downloaded image
     }
 
     @Override
@@ -35,25 +35,25 @@ public class AsyncBitmapDownloader extends AsyncTask<String, Void, Bitmap>{
         Bitmap b = null;
         try {
             url = new URL(strings[0]);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //connection with the URL of the image
             try {
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                b = BitmapFactory.decodeStream(in);
-                Log.i("AsyncBitmapDownloader", b.toString());
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream()); //the stream to analyse
+                b = BitmapFactory.decodeStream(in); //decode the stream into a bitmap
+                Log.i("AsyncBitmapDownloader", b.toString()); //a log to control the result
             } finally {
-                urlConnection.disconnect();
+                urlConnection.disconnect(); //deconnection
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return b;
+        return b; //return the Bitmap
     }
     protected void onPostExecute(Bitmap bit) {
         super.onPostExecute(bit);
         try {
-            image_view.setImageBitmap(bit);
+            image_view.setImageBitmap(bit); //set image
         } catch (Exception e) {
             e.printStackTrace();
         }

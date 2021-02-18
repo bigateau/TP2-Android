@@ -21,13 +21,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class AsyncFlickrJSONData extends AsyncTask<String, Void, JSONObject> {
-    private final String url;
-    public JSONObject json;
-    private AppCompatActivity app;
+
+    private AppCompatActivity app; //main activity
 
     public AsyncFlickrJSONData(AppCompatActivity a){
-        this.url = null;
-        this.app = a;
+        this.app = a; //stored our main activity
     }
 
     @Override
@@ -36,13 +34,13 @@ public class AsyncFlickrJSONData extends AsyncTask<String, Void, JSONObject> {
         JSONObject j = null;
         try {
             url = new URL(strings[0]);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //open a connection
             try {
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                j = readStream(in);
-                Log.i("JFL", j.toString());
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream()); //the Stream into a buffer
+                j = readStream(in); //json returned with the stream analysed
+                Log.i("JFL", j.toString()); //a log to control the result
             } finally {
-                urlConnection.disconnect();
+                urlConnection.disconnect(); //disconection
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -54,30 +52,29 @@ public class AsyncFlickrJSONData extends AsyncTask<String, Void, JSONObject> {
 
     private JSONObject readStream(InputStream is) throws IOException {
         try{
-            ByteArrayOutputStream bo = new ByteArrayOutputStream();
-            int i = is.read();
-            while (i != -1) {
-                bo.write(i);
-                i = is.read();
+            ByteArrayOutputStream bo = new ByteArrayOutputStream(); //creation of a nex Stream
+            int i = is.read(); //lecture of our stream in argument
+            while (i != -1) { // while we still have line to read
+                bo.write(i); //whrote the line
+                i = is.read(); //i = next line
             }
-            StringBuilder sb  = new StringBuilder();
-            sb.append(bo.toString());
-            String jsonextract = sb.substring("jsonFlickrFeed(".length(), sb.length() - 1);
-            return new JSONObject(jsonextract);
+            StringBuilder sb  = new StringBuilder(); //new string builder
+            sb.append(bo.toString()); //add the "big" Stream into our string builder
+            String jsonextract = sb.substring("jsonFlickrFeed(".length(), sb.length() - 1); //delete the words that we don't whant for our JSON object
+            return new JSONObject(jsonextract); //new JSON object with our string well formed
         } catch (JSONException e) {
-            return new JSONObject();
+            return new JSONObject(); //retrun a JSON object
         }
     }
 
     @Override
-    protected void onPostExecute(JSONObject jsonObject) {
+    protected void onPostExecute(JSONObject jsonObject) { //after the execution
         super.onPostExecute(jsonObject);
         try {
-            String url_to_download = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("media").getString("m");
-            Log.i("JSONObject", url_to_download);
-            AsyncTask<String, Void, Bitmap> task_download = new AsyncBitmapDownloader(this.app);
-            task_download.execute(url_to_download, null, null);
-            Log.i("JSONObject", url_to_download);
+            String url_to_download = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("media").getString("m"); //we get the first image URL
+            AsyncTask<String, Void, Bitmap> task_download = new AsyncBitmapDownloader(this.app); //we start a nex class withe the app in parameter
+            task_download.execute(url_to_download, null, null); //we execute the download of our picture
+            Log.i("JSONObject", url_to_download); //a log to control the result
         } catch (JSONException e) {
             e.printStackTrace();
         }
